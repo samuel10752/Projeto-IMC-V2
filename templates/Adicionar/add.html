@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Paciente</title>
+    <style>
+        /* Estilo básico */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 94%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            color: white;
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            max-width: 150px;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Adicionar Paciente</h1>
+    <form method="POST" action="/add">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite o nome" oninput="validateNome(this)" required />
+
+        <label for="peso">Peso (kg):</label>
+        <input type="text" id="peso" name="peso" placeholder="Ex.: 75" maxlength="2" oninput="validatePeso(this)"
+            onblur="formatPeso(this)" required />
+        <label for="altura">Altura (m):</label>
+        <input type="text" id="altura" name="altura" placeholder="Ex.: 1.8" maxlength="3" oninput="validateAltura(this)"
+            onblur="formatAltura(this)" required />
+
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="/">Voltar</a>
+
+    <script>
+        // Valida a entrada para permitir apenas números e um ponto decimal
+        function validateAltura(input) {
+            // Remove caracteres que não sejam números ou ponto decimal
+            input.value = input.value.replace(/[^0-9.]/g, '');
+
+            // Garante no máximo 3 caracteres (mesmo se colado via teclado)
+            if (input.value.length > 3) {
+                input.value = input.value.slice(0, 3);
+            }
+
+            // Permite apenas um ponto decimal na entrada
+            const parts = input.value.split('.');
+            if (parts.length > 2) {
+                input.value = parts[0] + '.' + parts[1];
+            }
+        }
+
+        // Formata a altura ao perder o foco
+        function formatAltura(input) {
+            let valor = parseFloat(input.value);
+            if (!isNaN(valor)) {
+                // Formata para exatamente uma casa decimal
+                input.value = valor.toFixed(1);
+            } else {
+                // Se inválido, limpa o campo
+                input.value = '';
+            }
+        }
+
+
+        // Valida a entrada para permitir apenas números e um ponto decimal
+        function validatePeso(input) {
+            // Remove caracteres que não sejam números ou ponto decimal
+            input.value = input.value.replace(/[^0-9.]/g, '');
+
+            // Garante no máximo 3 caracteres (mesmo se colado via teclado)
+            if (input.value.length > 2) {
+                input.value = input.value.slice(0, 3);
+            }
+
+            // Permite apenas um ponto decimal na entrada
+            const parts = input.value.split('.');
+            if (parts.length > 2) {
+                input.value = parts[0] + '.' + parts[1];
+            }
+        }
+
+        // Formata o peso ao perder o foco
+        function formatPeso(input) {
+            let valor = parseFloat(input.value);
+            if (!isNaN(valor)) {
+                // Formata para exatamente uma casa decimal
+                input.value = valor.toFixed(-1);
+            } else {
+                // Se inválido, limpa o campo
+                input.value = '';
+            }
+        }
+
+        // Função para validar entrada de apenas letras e espaços
+        function validateNome(input) {
+            // Permitir apenas letras e espaços
+            input.value = input.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+        }
+
+    </script>
+</body>
+
+</html>
